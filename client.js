@@ -12,17 +12,17 @@ var socket = new WebSocket('ws://' + window.location.host);
 var connection = new sharedb.Connection(socket);
 
 // For testing reconnection
-window.disconnect = function() {
+window.disconnect = function () {
   connection.close();
 };
-window.connect = function() {
+window.connect = function () {
   var socket = new WebSocket('ws://' + window.location.host);
   connection.bindToSocket(socket);
 };
 
 // Create local Doc instance mapped to 'examples' collection document with id 'richtext'
 var doc = connection.get('examples', 'richtext');
-doc.subscribe(function(err) {
+doc.subscribe(function (err) {
   if (err) throw err;
   // Quill.register(ColorClass, true);
   // Quill.register(SizeStyle, true);
@@ -52,21 +52,23 @@ doc.subscribe(function(err) {
     theme: 'snow'
   });
   quill.setContents(doc.data);
-  quill.on('text-change', function(delta, oldDelta, source) {
+  quill.on('text-change', function (delta, oldDelta, source) {
     if (source !== 'user') return;
     let d = new Date();
-    console.log(d.getSeconds()+JSON.stringify(delta));
+    console.log(d.getSeconds() + JSON.stringify(delta));
     let len = delta.ops.length;
-    let second = delta.ops[len-1];
-    if(second.insert === 'n'){
+    let second = delta.ops[len - 1];
+    if (second.insert === 'n') {
       // here try to history undo
       quill.history.undo();
     } else {
-      doc.submitOp(delta, {source: quill});
+      doc.submitOp(delta, {
+        source: 'wow'
+      });
     }
   });
-  doc.on('op', function(op, source) {
-    if (source === quill) return;
+  doc.on('op', function (op, source) {
+    if (source === 'wow') return;
     quill.updateContents(op);
   });
 });
