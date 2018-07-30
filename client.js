@@ -6,22 +6,33 @@ var Quill = require('quill');
 // Quill.register(ColorClass, true);
 // Quill.register(SizeStyle, true);
 sharedb.types.register(richText.type);
-
+// var WebSocket = require('ws');// no use
 // Open WebSocket connection to ShareDB server
-var socket = new WebSocket('ws://' + window.location.host);
-var connection = new sharedb.Connection(socket);
+var socket = new WebSocket('ws://' + window.location.host + '/sharedb');
+var wsttt = new WebSocket('ws://' + window.location.host + '/ttt');
+var sharedbConnection = new sharedb.Connection(socket);
 
+// console.log(wsttt);
+wsttt.onopen = function open(){
+  wsttt.send('on open client send hello');
+};
+wsttt.onmessage = function incoming(data){
+  console.log('wsttt recive a message form server');
+  console.log(data);
+  wsttt.send('wow');
+};
+window.wsttt = wsttt;
 // For testing reconnection
 window.disconnect = function () {
-  connection.close();
+  sharedbConnection.close();
 };
 window.connect = function () {
-  var socket = new WebSocket('ws://' + window.location.host);
-  connection.bindToSocket(socket);
+  var socket = new WebSocket('ws://' + window.location.host + '/sharedb');
+  sharedbConnection.bindToSocket(socket);
 };
 
 // Create local Doc instance mapped to 'examples' collection document with id 'richtext'
-var doc = connection.get('examples', 'richtext');
+var doc = sharedbConnection.get('examples', 'richtext');
 doc.subscribe(function (err) {
   if (err) throw err;
   // Quill.register(ColorClass, true);

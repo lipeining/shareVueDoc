@@ -16,12 +16,14 @@
   "dependencies": {
     "body-parser": "^1.18.3",
     "cookie-parser": "^1.4.3",
+    "debug": "^3.1.0",
     "express": "^4.14.0",
     "express-session": "^1.15.6",
     "morgan": "^1.9.0",
     "quill": "^1.0.0-beta.11",
     "rich-text": "^3.0.1",
     "sharedb": "^1.0.0-beta",
+    "uuid": "^3.3.2",
     "websocket-json-stream": "^0.0.1",
     "ws": "^1.1.0"
   },
